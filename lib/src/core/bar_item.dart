@@ -21,6 +21,9 @@ class SideNavigationBarItemWidget extends StatefulWidget {
   /// The current [expanded] state of [SideNavigationBar]
   final bool expanded;
 
+  final Color? color;
+  final bool? prefix;
+
   const SideNavigationBarItemWidget({
     Key? key,
     required this.itemData,
@@ -28,6 +31,8 @@ class SideNavigationBarItemWidget extends StatefulWidget {
     required this.index,
     required this.itemTheme,
     required this.expanded,
+    this.color,
+    this.prefix,
   }) : super(key: key);
 
   @override
@@ -51,34 +56,59 @@ class _SideNavigationBarItemWidgetState
     final Color? currentColor = _evaluateColor(context, isSelected);
 
     /// Return a basic list-tile for now
-    return Tooltip(
-      waitDuration: const Duration(seconds: 1),
-      message: widget.itemData.label,
-      child: widget.expanded
-          ? ListTile(
-              leading: Icon(
-                widget.itemData.icon,
-                color: currentColor,
-                size: widget.itemTheme.iconSize,
-              ),
-              title: Text(
-                widget.itemData.label,
-                style: _evaluateTextStyle(currentColor),
-              ),
-              onTap: () {
-                widget.onTap(widget.index);
-              },
-            )
-          : IconButton(
-              icon: Icon(
-                widget.itemData.icon,
-                color: currentColor,
-                size: widget.itemTheme.iconSize,
-              ),
-              onPressed: () {
-                widget.onTap(widget.index);
-              },
-            ),
+    return Row(
+      children: [
+        Visibility(
+          visible:
+              widget.prefix != null ? (isSelected & widget.prefix!) : false,
+          child: Container(
+            width: 8,
+            height: 30,
+            color: widget.color,
+          ),
+        ),
+        Tooltip(
+          waitDuration: const Duration(seconds: 1),
+          message: widget.itemData.label,
+          child: widget.expanded
+              ? SizedBox(
+                  width: 220,
+                  child: ListTile(
+                    leading: Icon(
+                      widget.itemData.icon,
+                      color: currentColor,
+                      size: widget.itemTheme.iconSize,
+                    ),
+                    title: Text(
+                      widget.itemData.label,
+                      style: _evaluateTextStyle(currentColor),
+                    ),
+                    onTap: () {
+                      widget.onTap(widget.index);
+                    },
+                  ),
+                )
+              : IconButton(
+                  icon: Icon(
+                    widget.itemData.icon,
+                    color: currentColor,
+                    size: widget.itemTheme.iconSize,
+                  ),
+                  onPressed: () {
+                    widget.onTap(widget.index);
+                  },
+                ),
+        ),
+        Visibility(
+          visible:
+              widget.prefix != null ? (isSelected & !widget.prefix!) : false,
+          child: Container(
+            width: 8,
+            height: 30,
+            color: widget.color,
+          ),
+        ),
+      ],
     );
   }
 

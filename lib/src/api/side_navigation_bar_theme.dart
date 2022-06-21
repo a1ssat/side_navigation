@@ -16,11 +16,16 @@ class SideNavigationBarTheme {
   /// The theme of [Divider]s
   final SideNavigationBarDividerTheme dividerTheme;
 
+  final bool? hasPrefix;
+  final Color? badgeColor;
+
   const SideNavigationBarTheme({
     required this.itemTheme,
     required this.togglerTheme,
     required this.dividerTheme,
     this.backgroundColor,
+    this.badgeColor,
+    this.hasPrefix,
   });
 
   /// Default theme

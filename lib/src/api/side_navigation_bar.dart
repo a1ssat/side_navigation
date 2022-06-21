@@ -184,6 +184,8 @@ class _SideNavigationBarState extends State<SideNavigationBar> {
                   itemTheme: _theme.itemTheme,
                   index: entry.key,
                   expanded: _expanded,
+                  color: _theme.badgeColor,
+                  prefix: _theme.hasPrefix,
                 ))
         .toList();
     return _items;
